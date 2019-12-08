@@ -7,6 +7,7 @@ if ($db->connect_errno == 0) {
 		$nama = $db->escape_string($_POST['nama']);
 		$uname = $db->escape_string($_POST['uname']);
 		$email = $db->escape_string($_POST['email']);
+		$nohp = $db->escape_string($_POST['nohp']);
 		$pass = $db->escape_string($_POST['pass']);
 		$upass = $db->escape_string($_POST['upass']);
 		$gambarktp= $_FILES['ktp']['name'];
@@ -45,7 +46,7 @@ if ($db->connect_errno == 0) {
 		}
 		else {
 
-			$sql = "insert into user values('$nama', '$uname', '$email', '$pass', '$gambarktp', '$gambarselfie', '$gambarkk', '$gambarsim', '$token', '0')";
+			$sql = "insert into user values('$nama', '$uname', '$email', '$nohp', '$pass', '$gambarktp', '$gambarselfie', '$gambarkk', '$gambarsim', '$token', '0')";
 			$res = $db->query($sql);
 			if ($res) {
 				if ($db->affected_rows > 0) {

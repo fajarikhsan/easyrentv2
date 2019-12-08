@@ -33,7 +33,7 @@
       <?php banner(); ?>
 
     <section class="login">
-      <div class="text-center"><h3>Login</h3></div>
+      <div class="text-center"><h3>Login toko rental</h3></div>
     </section>
 
     <?php 
@@ -41,8 +41,8 @@
       $email = $_POST['email'];
       $pass = $_POST['pass'];
 
-      $login = new User ($email, $pass);
-      $login->login();
+      $login = new Penyedia($email, $pass);
+      $login->login1();
     }
     ?>
 
@@ -126,7 +126,7 @@
         <div class="row text-center">
           <div class="col">
             Masuk sebagai penyedia rental.
-            <a href="hal-login-rental.php" class="badge badge-dark">Klik disini</a>
+            <a href="#" class="badge badge-dark">Klik disini</a>
           </div>
         </div>
       </div>

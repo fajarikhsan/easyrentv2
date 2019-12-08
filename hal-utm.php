@@ -3,6 +3,7 @@ if (!isset($_SESSION['email'])) {
   header ("Location: hal-login.php?error=4");
 } ?>
 <?php include_once("functions.php"); ?>
+<?php require_once 'easyrent/autoload.php'; ?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -33,7 +34,7 @@ if (!isset($_SESSION['email'])) {
     <title>Easyrent</title>
   </head>
   <body>
-    <?php banner(); ?>
+    <?php banner(); $logout = new User();?>
 
     <section class="login">
       <div class="text-center"><h3>Berhasil Login</h3></div>

@@ -15,9 +15,9 @@
     //ganti dengan email dan nama kamu
     $mail->setFrom('support@easyrent.com', 'EasyRent');
 
-    $mail->addAddress($_POST['email'], $_POST['nama']);     
+    $mail->addAddress($this->email, $this->nama);     
     $mail->isHTML(true);                                 
     $mail->Subject = "Aktivasi pendaftaran Member";
-    $mail->Body    = "Selamat, anda berhasil membuat akun. Untuk mengaktifkan akun anda silahkan klik link dibawah ini.<br> <a href='http://localhost/easyrentv2/aktivasi.php?t=".$token."'>http://localhost/easyrentv2/aktivasi.php?t=".$token."</a>  ";
+    $mail->Body    = "Selamat, anda berhasil membuat akun. Untuk mengaktifkan akun anda silahkan klik link dibawah ini.<br> <a href='http://localhost/easyrentv2/aktivasi.php?t=".$token."'><button> Aktivasi Akun </button></a>  ";
     $mail->send();
 ?>

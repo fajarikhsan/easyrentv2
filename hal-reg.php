@@ -1,5 +1,5 @@
 <?php include_once("functions.php"); ?>
-<?php $cek=koneksi_db(); ?>
+<?php require_once 'easyrent/autoload.php'; ?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -39,24 +39,60 @@
 
     <script>
             // show the given page, hide the rest
-            function show(elementID) {
+            function show(elementID, tabID) {
                 // try to find the requested page and alert if it's not found
                 var ele = document.getElementById(elementID);
-                if (!ele) {
+                var tab = document.getElementById(tabID);
+                if ((!ele) || (!tab)) {
                     alert("no such element");
                     return;
                 }
 
                 // get all pages, loop through them and hide them
-                var pages = document.getElementsByClassName('page');
+                var pages = document.getElementsByClassName('tab-pane');
+                var tabs = document.getElementsByClassName('nav-link');
                 for(var i = 0; i < pages.length; i++) {
-                    pages[i].style.display = 'none';
+                    pages[i].classList.remove('show', 'active');
+                    tabs[i].classList.remove('active');
                 }
 
                 // then show the requested page
-                ele.style.display = 'block';
+                ele.classList.add('tab-pane', 'fade', 'active', 'show');
+                tab.classList.add('active');
             }
         </script>
+
+        <script type="text/javascript">
+            function readURL(input, id) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    var id = document.getElementById(id);
+                    reader.onload = function (e) {
+                        $(id).attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        </script>
+
+    <?php 
+    if (isset($_POST['tblReg'])) {
+      $nama = $_POST['nama'];
+      $uname = $_POST['uname'];
+      $email = $_POST['email'];
+      $nohp = $_POST['nohp'];
+      $pass = $_POST['pass'];
+      $upass = $_POST['upass'];
+      $gambarktp= $_FILES['ktp']['name'];
+      $gambarselfie= $_FILES['selfie']['name'];
+      $gambarkk= $_FILES['kk']['name'];
+      $gambarsim= $_FILES['sim']['name'];
+
+      $user = new User($email, $pass, $nama, $nohp, $uname, $upass, $gambarktp, $gambarselfie, $gambarkk, $gambarsim);
+      $user->mendaftar();
+    }
+    ?>
 
     <section class="notif">
       <?php 
@@ -94,116 +130,132 @@
 
     <section class="formdf">
       <div class="container">
-      <form method="post" name="reg" action="aksireg.php" enctype="multipart/form-data">
-        <div class="page" id="page1" style="">
-          <div class="form-group">
-          <input class="form-control form-control-sm" type="text" placeholder="Nama" name="nama" data-toggle="tooltip" data-placement="top" title="Nama">
-        </div>
-        <div class="form-group">
-          <input class="form-control form-control-sm" type="text" placeholder="Username" name="uname" data-toggle="tooltip" data-placement="top" title="Username">
-        </div>
-        <div class="form-group">
-          <input type="email" class="form-control form-control-sm" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="email" data-toggle="tooltip" data-placement="top" title="Email">
-        </div>
-        <div class="form-group">
-          <input type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password" name="pass" data-toggle="tooltip" data-placement="top" title="Password">
-        </div>
-        <div class="form-group mb-4">
-          <input type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Ulangi Password" name="upass" data-toggle="tooltip" data-placement="top" title="Ulangi Password">
-        </div>
-        <div class="text-center mb-5"><button type="button" class="btn btn-primary" style="background-color: #304A8B;" name="tblReg" data-toggle="tooltip" data-placement="top" title="Lanjut" onclick="show('page2');">Lanjut</button></div>
-        </div>
-        
-        <div class="page" id="page2" style="display: none;">
-          <div class="container" style="font-size: 14px;">
-        <div class="row mb-4">
-          <div class="col">
-            Unggah data diri :
+      <form method="post" name="reg" action="hal-reg.php" enctype="multipart/form-data">
+        <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#page1" role="tab" aria-controls="home" aria-selected="true">Data diri</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#page2" role="tab" aria-controls="profile" aria-selected="false">Upload KTP</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#page3" role="tab" aria-controls="contact" aria-selected="false">Upload KK</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="page1" role="tabpanel" aria-labelledby="home-tab">
+             <div class="form-group">
+              <input class="form-control form-control-sm" type="text" placeholder="Nama" name="nama" data-toggle="tooltip" data-placement="top" title="Nama">
+            </div>
+            <div class="form-group">
+              <input class="form-control form-control-sm" type="text" placeholder="Username" name="uname" data-toggle="tooltip" data-placement="top" title="Username">
+            </div>
+            <div class="form-group">
+              <input type="email" class="form-control form-control-sm" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="email" data-toggle="tooltip" data-placement="top" title="Email">
+            </div>
+            <div class="form-group">
+              <input class="form-control form-control-sm" type="text" placeholder="Nomor HP" name="nohp" data-toggle="tooltip" data-placement="top" title="Nomor HP">
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Password" name="pass" data-toggle="tooltip" data-placement="top" title="Password">
+            </div>
+            <div class="form-group mb-4">
+              <input type="password" class="form-control form-control-sm" id="exampleInputPassword1" placeholder="Ulangi Password" name="upass" data-toggle="tooltip" data-placement="top" title="Ulangi Password">
+            </div>
+            <div class="text-center mb-5"><button type="button" class="btn btn-primary" style="background-color: #304A8B;" name="tblReg" data-toggle="tooltip" data-placement="top" title="Lanjut" onclick="show('page2', 'profile-tab');">Lanjut</button></div>
           </div>
+          <div class="tab-pane fade" id="page2" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="container" style="font-size: 14px;">
+              <div class="row mb-4">
+                <div class="col">
+                  Unggah data diri :
+                </div>
 
-          <div class="col-4" style="color: #FF2525;">
-            * Harus diisi
+                <div class="col-4" style="color: #FF2525;">
+                  * Harus diisi
+                </div>
+              </div>
+                    <div class="row mb-4">
+                      <div class="col">
+                        <div class="form-group">
+                          <label for="exampleFormControlFile1">KTP <b style="color: #FF2525;">*</b> :</label>
+                          <div class="text-center mb-2"><img src="img/pic.png" id="ktp" width="40%" /></div>
+                          <input type="file" class="form-control-file" id="exampleFormControlFile1" name="ktp" onchange="readURL(this,'ktp');">
+                        </div>
+                      </div>
+                    </div>
+                
+                    <div class="row mb-4">
+                      <div class="col">
+                        <div class="form-group">
+                          <label for="exampleFormControlFile1">Foto selfie dengan KTP <b style="color: #FF2525;">*</b> :</label>
+                          <div class="text-center mb-2"><img src="img/pic.png" id="selfie" width="40%" /></div>
+                          <input type="file" class="form-control-file" id="exampleFormControlFile1" name="selfie" onchange="readURL(this,'selfie');">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center mb-5"><button type="button" class="btn btn-primary" style="background-color: #304A8B;" name="tbllanjut" onclick="show('page3', 'contact-tab');">Lanjut</button></div>
           </div>
-        </div>
+          <div class="tab-pane fade" id="page3" role="tabpanel" aria-labelledby="contact-tab">
+            <div class="container" style="font-size: 14px;">
+              <div class="row mb-4">
+                <div class="col">
+                  Unggah data diri :
+                </div>
+
+                <div class="col-4" style="color: #FF2525;">
+                  * Harus diisi
+                </div>
+              </div>
+
               <div class="row mb-4">
                 <div class="col">
                   <div class="form-group">
-                    <label for="exampleFormControlFile1">KTP <b style="color: #FF2525;">*</b> :</label>
-                    <input type="file" class="form-control-file" id="exampleFormControlFile1" name="ktp">
+                    <label for="exampleFormControlFile1">Kartu Keluarga <b style="color: #FF2525;">*</b> :</label>
+                    <div class="text-center mb-2"><img src="img/pic.png" id="kk" width="40%" /></div>
+                    <input type="file" class="form-control-file" id="exampleFormControlFile1" name="kk" onchange="readURL(this,'kk');">
                   </div>
                 </div>
               </div>
-          
+
               <div class="row mb-4">
                 <div class="col">
                   <div class="form-group">
-                    <label for="exampleFormControlFile1">Foto selfie dengan KTP <b style="color: #FF2525;">*</b> :</label>
-                    <input type="file" class="form-control-file" id="exampleFormControlFile1" name="selfie">
+                    <label for="exampleFormControlFile1">Surat Izin Mengemudi :</label>
+                    <div class="text-center mb-2"><img src="img/pic.png" id="sim" width="40%" /></div>
+                    <input type="file" class="form-control-file" id="exampleFormControlFile1" name="sim" onchange="readURL(this,'sim');">
+                  </div>
+                </div>
+              </div>
+
+            <div class="text-center mb-5">
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-primary" style="background-color: #304A8B;" data-toggle="modal" data-target="#exampleModal">Daftar</button>
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Daftar</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      Simpan pendaftaran?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary" name="tblReg">Save changes</button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          <br>
-          <br>
-            <div class="text-center mb-5"><button type="button" class="btn btn-primary" style="background-color: #304A8B;" name="tbllanjut" onclick="show('page3');">Lanjut</button></div>
-        </div>
-
-        <div class="page" id="page3" style="display: none;">
-          <div class="container" style="font-size: 14px;">
-        <div class="row mb-4">
-          <div class="col">
-            Unggah data diri :
-          </div>
-
-          <div class="col-4" style="color: #FF2525;">
-            * Harus diisi
-          </div>
-        </div>
-
-        <div class="row mb-4">
-          <div class="col">
-            <div class="form-group">
-              <label for="exampleFormControlFile1">Kartu Keluarga <b style="color: #FF2525;">*</b> :</label>
-              <input type="file" class="form-control-file" id="exampleFormControlFile1" name="kk">
-            </div>
-          </div>
-        </div>
-
-        <div class="row mb-4">
-          <div class="col">
-            <div class="form-group">
-              <label for="exampleFormControlFile1">Surat Izin Mengemudi :</label>
-              <input type="file" class="form-control-file" id="exampleFormControlFile1" name="sim">
-            </div>
-          </div>
-        </div>
-
-      <div class="text-center mb-5">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" style="background-color: #304A8B;" data-toggle="modal" data-target="#exampleModal">Daftar</button>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Daftar</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
               </div>
-              <div class="modal-body">
-                Simpan pendaftaran?
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" name="tblReg">Save changes</button>
-              </div>
-            </div>
           </div>
         </div>
-      </div>
-        </div>
-
 
       </form>
       </div>
