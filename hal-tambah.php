@@ -45,6 +45,21 @@
     }
   </script>
 
+  <?php 
+  if (isset($_POST['tblReg'])) {
+    $nama_mobil = $_POST['namaMbl'];
+    $thn_mobil = $_POST['tahun'];
+    $tipe_mobil = $_POST['tipeMbl'];
+    $silinder = $_POST['silinder'];
+    $harga = $_POST['harga'];
+    $deskripsi = $_POST['deskripsi'];
+    $foto_mobil = $_FILES['foto_mobil']['name'];
+
+    $mobil = new Mobil ($nama_mobil, $thn_mobil, $tipe_mobil, $silinder, $harga, $deskripsi, $foto_mobil);
+    $mobil->tambah_mobil();
+  }
+  ?>
+
   <section class="header">
       <?php banner(); ?>
   </section>
@@ -53,16 +68,40 @@
     <div class="text-center"><h3>Tambah Mobil</h3></div>
   </section>
 
+  <section class="notif">
+    <?php 
+    if (isset($_GET["error"])) {
+          $error=$_GET["error"];
+          if ($error==1)
+            showNotif("Harap isi Nama Mobil.");
+          else if ($error==2)
+            showNotif("Harap isi Tahun Mobil.");
+          else if ($error==3)
+            showNotif("Harap isi Tipe Mobil.");
+          else if ($error==4)
+            showNotif("Harap isi Silinder Mobil.");
+          else if ($error==5)
+            showNotif("Harap isi Harga Mobil.");
+          else if ($error==6)
+            showNotif("Harap Masukkan Foto Mobil");
+          else if ($error==7)
+            showNotif("Koneksi ke Database gagal. Autentikasi gagal.");
+          else
+            showNotif("Unknown Error.");
+          } 
+    ?>
+  </section>
+
   <section class="isi">
     <div class="container" style="font-size: 14px;">
-      <form name="simpanMbl" method="post" action="hal-tambah.php">
+      <form name="simpanMbl" method="post" action="hal-tambah.php" enctype="multipart/form-data">
 
         <div class="row mb-4">
           <div class="col">
             <div class="form-group">
               <label for="exampleFormControlFile1">Foto Mobil :</label>
               <div class="text-center mb-2"><img src="img/pic.png" id="mobil" width="30%" /></div>
-              <input type="file" class="form-control-file" id="exampleFormControlFile1" name="mobil" onchange="readURL(this,'mobil');">
+              <input type="file" class="form-control-file" id="exampleFormControlFile1" name="foto_mobil" onchange="readURL(this,'mobil');">
             </div>
           </div>
         </div>

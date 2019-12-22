@@ -1,3 +1,7 @@
+<?php session_start();
+if (!isset($_SESSION['email'])) {
+    header ("Location: hal-login-rental.php?error=4");
+} ?>
 <?php include_once("functions.php"); ?>
 <?php require_once 'easyrent/autoload.php'; ?>
 <!doctype html>
@@ -32,11 +36,22 @@
   <body>
     <?php banner(); ?>
 
+    <section class="notif">
+      <?php 
+      if (isset($_GET['success'])) {
+      $succ = $_GET['success'];
+      if($succ == 1) {
+        showNotif("Penambahan Mobil Berhasil!");
+      }
+    }
+      ?>
+    </section>
+
     <section class="top">
       <div class="container">
         <div class="row">
           <div class="col">
-            <div class="card h-50 w-150" style="background-color: #304A8B;">
+            <div class="card w-100" style="background-color: #304A8B;">
               <div class="card-body">
                 <img src="img/user.png">
                 Easyrent
@@ -44,7 +59,7 @@
             </div>
           </div>
           <div class="col-4">
-            <div class="card h-50 w-75" style="background-color: #304A8B;">
+            <div class="card w-75" style="background-color: #304A8B;">
               <div class="card-body text-center">
                 <img src="img/setting.png">
               </div>
@@ -55,14 +70,14 @@
 
       <hr>
 
-      <div class="container">
+      <div class="container mb-5">
         <div class="row">
           <div class="col">
             <div class="card text-center h-100" style="background-color: #304A8B;">
-              <div class="card-body">
+              <a href="hal-tambah.php"><div class="card-body">
                 <img src="img/car.png">
                 <p class="card-text" style="color: black;">Tambah Mobil</p>
-              </div>
+              </div></a>
             </div>
           </div>
 
@@ -104,16 +119,15 @@
 
           <div class="col">
             <div class="card text-center h-100" style="background-color: #304A8B;">
-              <div class="card-body">
+              <a href="logout.php"><div class="card-body">
                 <img src="img/logout.png">
                 <p class="card-text" style="color: black;">Logout</p>
-              </div>
+              </div></a>
             </div>
           </div>
 
           </div>
         </div>
-      </div>
     </section>
 
     <section class="footer">

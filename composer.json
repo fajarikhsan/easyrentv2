@@ -1,6 +1,6 @@
 {
     "require": {
-        "nexmo/client": "^1.8",
+        "google/apiclient": "^2.0",
         "phpmailer/phpmailer": "^6.1"
     }
 }

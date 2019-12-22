@@ -1,5 +1,6 @@
 <?php include_once("functions.php"); ?>
 <?php require_once 'easyrent/autoload.php'; ?>
+<?php include_once 'login-google.php' ?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -102,7 +103,9 @@
 
         <div class="row justify-content-center mb-5">
           <div class="col-2">
-              <img src="img/google.png" width="100%">
+              <a href="<?php echo $google_client->createAuthUrl(); ?>">
+                <img src="img/google.png" width="100%">
+              </a>
           </div>
 
           <div class="col-2">

@@ -82,7 +82,7 @@
 
     <section class="formlg">
       <div class="container">
-      <form method="post" name="login" action="hal-login.php">
+      <form method="post" name="login" action="hal-login-rental.php">
         <div class="form-group">
           <input type="email" class="form-control form-control-sm" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="email">
         </div>

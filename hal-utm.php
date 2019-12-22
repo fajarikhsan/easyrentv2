@@ -1,6 +1,8 @@
 <?php session_start();
 if (!isset($_SESSION['email'])) {
-  header ("Location: hal-login.php?error=4");
+  if(!isset($_SESSION['access_token'])) {
+   header ("Location: hal-login.php?error=4");
+  }
 } ?>
 <?php include_once("functions.php"); ?>
 <?php require_once 'easyrent/autoload.php'; ?>
@@ -34,10 +36,11 @@ if (!isset($_SESSION['email'])) {
     <title>Easyrent</title>
   </head>
   <body>
-    <?php banner(); $logout = new User();?>
+    <?php banner(); ?>
 
     <section class="login">
       <div class="text-center"><h3>Berhasil Login</h3></div>
+      <div><h2>Hai <?php echo $_SESSION['username']; ?></h2></div>
       <div class="text-center"> <a href="logout.php">LOGOUT</a> </div>
     </section>
 

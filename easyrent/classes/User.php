@@ -69,9 +69,13 @@ class User {
 			// }
 			else {
 
-				$sql = "insert into user values('$this->nama', '$this->username', '$this->email', '$this->nohp', '$this->password', '$this->gambarktp', '$this->gambarselfie', '$this->gambarkk', '$this->gambarsim', '$this->token', '0')";
+				$sql = "insert into user values('$this->nama', '$this->username', '$this->email', '$this->nohp', '$this->password', '$this->token', '0')";
+				$sql2 = "insert into perental values('$this->email', '$this->gambarktp', '$this->gambarselfie', '$this->gambarkk', '$this->gambarsim')";
+
 				$res = $db->query($sql);
-				if ($res) {
+				$rst = $db->query($sql2);
+
+				if (($res) && ($rst)) {
 					if ($db->affected_rows > 0) {
 						header("Location: ../easyrentv2/hal-login.php?success=1");
 						new Mail($this->email, $this->nama, $this->token);
